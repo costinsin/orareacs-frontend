@@ -1,0 +1,11 @@
+.login-card {
+    padding: 1rem;
+    width: 40%;
+    background-color: #F7F7F7;
+    margin: auto auto;
+}
+
+.form-icon {
+    height: 1.3rem;
+    margin-right: 0.3rem;
+}

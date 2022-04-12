@@ -1,20 +1,22 @@
-import React from 'react'
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from './components/Header';
-import Login from './components/Login';
-import Main from './components/Main';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Header from "./components/Header";
+import Login from "./components/Login";
+import Main from "./components/Main";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function App() {
-
   return (
-    <Router>
-      <Header/>
-      <Routes>
-        <Route exact path="/" element={<Main/>} />
-        <Route path="/login" element={<Login/>} />
-      </Routes>
-    </Router>
-  )
+    <div
+      style={{ height: "100vh", display: "flex", flexDirection: "column" }}
+    >
+      <Router>
+        <Header />
+        <Routes>
+          <Route exact path="/" element={<Main />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </Router>
+    </div>
+  );
 }
-
