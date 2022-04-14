@@ -9,7 +9,7 @@ import groupImg from "../assets/group.png";
 import axios from "axios";
 
 export default function Login() {
-  const [key, setKey] = useState("login");
+  const [authState, setAuthState] = useState("login");
   // TODO: Make a database request to get the user's groups
   const groups = ["331CC", "332CC", "333CC", "334CC", "335CC", "336CC"];
 
@@ -26,7 +26,8 @@ export default function Login() {
       })
       .then((res) => {
         console.log(res);
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.log(err);
       });
   }
@@ -44,24 +45,27 @@ export default function Login() {
       <Card className="login-card" style={{ minWidth: "300px" }}>
         <Tabs
           id="controlled-tab"
-          activeKey={key}
-          onSelect={(k) => setKey(k)}
+          activeKey={authState}
+          onSelect={(k) => setAuthState(k)}
           className="mb-3"
         >
           <Tab eventKey="login" title="Login">
             <Card.Body style={{ paddingLeft: "0.3rem" }}>
               <Form /*onSubmit={handleLogin}*/>
                 <Form.Group controlId="formLoginUsername" className="mb-3">
-                  <div className="d-flex align-items-center">
-                    <FormIcon src={usernameImg} />
-                    <Form.Control type="text" placeholder="Username" />
-                  </div>
+                  <FormField
+                    src={usernameImg}
+                    name="username"
+                    placeholder="Username"
+                  />
                 </Form.Group>
                 <Form.Group controlId="formLoginPassword" className="mb-3">
-                  <div className="d-flex align-items-center">
-                    <FormIcon src={passwordImg} />
-                    <Form.Control type="password" placeholder="Password" />
-                  </div>
+                  <FormField
+                    src={passwordImg}
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                  />
                 </Form.Group>
                 <Form.Group controlId="formLogin" className="mb-3">
                   <Button variant="primary" type="submit">
@@ -75,55 +79,41 @@ export default function Login() {
             <Card.Body style={{ paddingLeft: "0.3rem" }}>
               <Form onSubmit={handleRegister}>
                 <Form.Group controlId="formUsername" className="mb-2">
-                  <div className="d-flex align-items-center">
-                    <FormIcon src={usernameImg} />
-                    <Form.Control
-                      name="username"
-                      type="text"
-                      placeholder="Username"
-                      autoComplete="false"
-                    />
-                  </div>
+                  <FormField
+                    src={usernameImg}
+                    name="username"
+                    placeholder="Username"
+                  />
                 </Form.Group>
                 <Form.Group controlId="formFirstName" className="mb-2">
-                  <div className="d-flex align-items-center">
-                    <FormIcon src={idImg} />
-                    <Form.Control
-                      name="firstname"
-                      type="text"
-                      placeholder="First name"
-                    />
-                  </div>
+                  <FormField
+                    src={idImg}
+                    name="firstname"
+                    placeholder="First name"
+                  />
                 </Form.Group>
                 <Form.Group controlId="formLastName" className="mb-2">
-                  <div className="d-flex align-items-center">
-                    <FormIcon src={idImg} />
-                    <Form.Control
-                      name="lastname"
-                      type="text"
-                      placeholder="Last name"
-                    />
-                  </div>
+                  <FormField
+                    src={idImg}
+                    name="lastname"
+                    placeholder="Last name"
+                  />
                 </Form.Group>
                 <Form.Group controlId="formEmail" className="mb-2">
-                  <div className="d-flex align-items-center">
-                    <FormIcon src={emailImg} />
-                    <Form.Control
-                      name="email"
-                      type="email"
-                      placeholder="Email address"
-                    />
-                  </div>
+                  <FormField
+                    src={emailImg}
+                    name="email"
+                    type="email"
+                    placeholder="Email address"
+                  />
                 </Form.Group>
                 <Form.Group controlId="formPassword" className="mb-2">
-                  <div className="d-flex align-items-center">
-                    <FormIcon src={passwordImg} />
-                    <Form.Control
-                      name="password"
-                      type="password"
-                      placeholder="Password"
-                    />
-                  </div>
+                  <FormField
+                    src={passwordImg}
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                  />
                 </Form.Group>
                 <Form.Group controlId="formGroup" className="mb-3">
                   <div className="d-flex align-items-center">
@@ -158,4 +148,13 @@ export default function Login() {
 
 function FormIcon({ src }) {
   return <img src={src} className="form-icon" alt="" />;
+}
+
+function FormField({ src, name, placeholder, type = "text" }) {
+  return (
+    <div className="d-flex align-items-center">
+      <FormIcon src={src} />
+      <Form.Control name={name} type={type} placeholder={placeholder} />
+    </div>
+  );
 }
