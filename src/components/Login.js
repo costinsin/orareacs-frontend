@@ -10,26 +10,56 @@ import axios from "axios";
 
 export default function Login() {
   const [authState, setAuthState] = useState("login");
+  const [errorMessage, setErrorMessage] = useState(null);
   // TODO: Make a database request to get the user's groups
   const groups = ["331CC", "332CC", "333CC", "334CC", "335CC", "336CC"];
 
+  function checkFields(object, fields) {
+    let checked = true;
+
+    for (let i = 0; i < fields.length; i++) {
+      if (
+        object[fields[i]]["value"] === "" ||
+        (fields[i] == "group" && object[fields[i]]["value"] === "default")
+      ) {
+        checked = false;
+      }
+    }
+
+    return checked;
+  }
+
   function handleRegister(e) {
     e.preventDefault();
-    axios
-      .post("https://orareacs-backend.herokuapp.com/api/register", {
-        username: e.target.username.value,
-        firstName: e.target.firstname.value,
-        lastName: e.target.lastname.value,
-        password: e.target.password.value,
-        email: e.target.email.value,
-        group: e.target.group.value,
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (
+      !checkFields(e.target, [
+        "username",
+        "firstname",
+        "lastname",
+        "password",
+        "email",
+        "group",
+      ])
+    ) {
+      setErrorMessage("Please fill out all fields");
+    } else {
+      setErrorMessage(null);
+      axios
+        .post("https://orareacs-backend.herokuapp.com/api/register", {
+          username: e.target.username.value,
+          firstName: e.target.firstname.value,
+          lastName: e.target.lastname.value,
+          password: e.target.password.value,
+          email: e.target.email.value,
+          group: e.target.group.value,
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 
   return (
@@ -131,6 +161,13 @@ export default function Login() {
                       })}
                     </Form.Select>
                   </div>
+                </Form.Group>
+                <Form.Group
+                  controlId="formErorr"
+                  hidden={errorMessage ? false : true}
+                  className="mb-3"
+                >
+                  <p style={{ color: "red" }}>{errorMessage}</p>
                 </Form.Group>
                 <Form.Group controlId="formRegister">
                   <Button variant="primary" type="submit">
