@@ -16,7 +16,7 @@ export default function Header() {
         <Nav>
           <LinkContainer
             style={{ paddingRight: "2rem", paddingLeft: "1rem" }}
-            to="/login"
+            to="/auth"
           >
             <Nav.Link>Login</Nav.Link>
           </LinkContainer>
