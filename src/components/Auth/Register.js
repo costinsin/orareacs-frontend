@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import passwordImg from "../../assets/password.png";
 import usernameImg from "../../assets/user.png";
@@ -6,9 +6,9 @@ import idImg from "../../assets/id.png";
 import emailImg from "../../assets/email.png";
 import groupImg from "../../assets/group.png";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function Register({ setAuthState }) {
-  const [errorMessage, setErrorMessage] = useState(null);
   // TODO: Make a database request to get the user's groups
   const groups = ["331CC", "332CC", "333CC", "334CC", "335CC", "336CC"];
 
@@ -16,32 +16,32 @@ export default function Register({ setAuthState }) {
     for (let i = 0; i < fields.length; i++) {
       if (fields[i] === "username") {
         if (object[fields[i]]["value"].length < 3) {
-          setErrorMessage("Username must contain at least 3 characters");
+          toast.error("Username must contain at least 3 characters");
           return true;
         }
         if (!/^[A-Za-z]{1,1}$/.test(object[fields[i]]["value"][0])) {
-          setErrorMessage("Username must start with a letter");
+          toast.error("Username must start with a letter");
           return true;
         }
       }
 
       if (fields[i] === "firstname") {
-        if (/[0-9]/.test(object[fields[i]]["value"])) {
-          setErrorMessage("First name must contain only letters");
+        if (!/^[a-zA-Z]+$/.test(object[fields[i]]["value"])) {
+          toast.error("First name must contain only letters");
           return true;
         }
       }
 
       if (fields[i] === "lastname") {
-        if (/[0-9]/.test(object[fields[i]]["value"])) {
-          setErrorMessage("Last name must contain only letters");
+        if (!/^[a-zA-Z]+$/.test(object[fields[i]]["value"])) {
+          toast.error("Last name must contain only letters");
           return true;
         }
       }
 
       if (fields[i] === "group") {
         if (object[fields[i]]["value"] === "default") {
-          setErrorMessage("Please select a group");
+          toast.error("Please select a group");
           return true;
         }
       }
@@ -75,13 +75,11 @@ export default function Register({ setAuthState }) {
         group: e.target.group.value,
       })
       .then((res) => {
-        setErrorMessage(null);
         setAuthState("login");
-        console.log(res);
+        toast.success("Account successfully created 🎉");
       })
       .catch((err) => {
-        setErrorMessage("Username already exists");
-        console.log(err);
+        toast.error("Username already exists 😔");
       });
   }
 
@@ -129,13 +127,6 @@ export default function Register({ setAuthState }) {
               })}
             </Form.Select>
           </div>
-        </Form.Group>
-        <Form.Group
-          controlId="formErorr"
-          hidden={errorMessage ? false : true}
-          className="mb-3"
-        >
-          <p style={{ color: "red" }}>{errorMessage}</p>
         </Form.Group>
         <Form.Group controlId="formRegister">
           <Button variant="primary" type="submit">

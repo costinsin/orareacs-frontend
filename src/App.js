@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Auth from "./components/Auth/Auth";
 import Main from "./components/Main";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function App() {
@@ -15,6 +17,7 @@ export default function App() {
           <Route path="/auth" element={<Auth />} />
         </Routes>
       </Router>
+      <ToastContainer />
     </div>
   );
 }
