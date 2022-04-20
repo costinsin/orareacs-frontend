@@ -68,23 +68,38 @@ export default function Register({ setAuthState }) {
     )
       return;
 
-    axios
-      .post("https://orareacs-backend.herokuapp.com/api/register", {
+    let registerPromise = axios.post(
+      "https://orareacs-backend.herokuapp.com/api/register",
+      {
         username: e.target.username.value,
         firstName: e.target.firstname.value,
         lastName: e.target.lastname.value,
         password: e.target.password.value,
         email: e.target.email.value,
         group: e.target.group.value,
-      })
-      .then((res) => {
-        setTwoFactorStage(true);
-        setSecretImage(res.data["secretImage"]);
-        toast.success("Account successfully created 🎉");
-      })
-      .catch((err) => {
-        toast.error("Username already exists 😔");
-      });
+      },
+      { timeout: 20000 }
+    );
+
+    // A toast notification that waits for backend response before showing a message
+    toast.promise(registerPromise, {
+      pending: "Registering in progress...",
+      success: {
+        render(result) {
+          setTwoFactorStage(true);
+          setSecretImage(result.data.data["secretImage"]);
+
+          return "Account successfully created 🎉";
+        },
+      },
+      error: {
+        render(result) {
+          if (result.data.response !== undefined)
+            return result.data.response.data.message;
+          else return "An error has occurred";
+        },
+      },
+    });
   }
 
   if (twoFactorStage) {
