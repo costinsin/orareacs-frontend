@@ -7,7 +7,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 export default function Login() {
-  const [loginStage, setLoginStage] = useState(false);
+  const [authCodeStage, setAuthCodeStage] = useState(false);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
 
@@ -17,7 +17,7 @@ export default function Login() {
       return true;
     }
 
-    if (object[field]["value"].length != 6) {
+    if (object[field]["value"].length !== 6) {
       toast.error("Code must contain exactly 6 characters");
       return true;
     }
@@ -40,15 +40,21 @@ export default function Login() {
     toast.promise(loginCheckCredentials, {
       pending: "Authentification in progress...",
       success: {
-        render(result) {
-          setLoginStage(true);
+        render() {
+          setAuthCodeStage(true);
           setUsername(e.target.username.value);
           setPassword(e.target.password.value);
 
           return "Valid credentials";
         },
       },
-      error: "Invalid credentials",
+      error: {
+        render(result) {
+          if (result.data.response !== undefined)
+            return result.data.response.data.message;
+          else return "An error has occurred";
+        },
+      },
     });
   }
 
@@ -62,7 +68,7 @@ export default function Login() {
       {
         username: username,
         password: password,
-        code: e.target.authCode.value,
+        code: parseInt(e.target.authCode.value),
       },
       { timeout: 20000 }
     );
@@ -70,17 +76,23 @@ export default function Login() {
     toast.promise(loginCheckCodeForCredentials, {
       pending: "Authentification in progress...",
       success: {
-        render(result) {
+        render() {
           //Main changes
 
           return "Login successfully 🎉";
         },
       },
-      error: "Invalid code",
+      error: {
+        render(result) {
+          if (result.data.response !== undefined)
+            return result.data.response.data.message;
+          else return "An error has occurred";
+        },
+      },
     });
   }
 
-  if (loginStage) {
+  if (!authCodeStage) {
     return (
       <Card.Body style={{ paddingLeft: "0.3rem" }}>
         <Form onSubmit={handleLogin}>
