@@ -4,7 +4,7 @@ import "../../styles/Login.css";
 import Register from "./Register";
 import Login from "./Login";
 
-export default function Auth() {
+export default function Auth({ setUserType }) {
   const [authState, setAuthState] = useState("login");
 
   return (
@@ -25,7 +25,7 @@ export default function Auth() {
           className="mb-3"
         >
           <Tab eventKey="login" title="Login">
-            <Login />
+            <Login setUserType={setUserType} />
           </Tab>
           <Tab eventKey="register" title="Register">
             <Register setAuthState={setAuthState} />

@@ -1,20 +1,32 @@
-import React from "react";
+import { React, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Auth from "./components/Auth/Auth";
 import Main from "./components/Main";
+import Settings from "./components/Student/Settings";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { checkAccessToken } from "./utils/tokens";
 
 export default function App() {
+  const [userType, setUserType] = useState("");
+
+  useEffect(() => {
+    let accessToken = localStorage.getItem("accessToken");
+    let refreshToken = localStorage.getItem("refreshToken");
+
+    setUserType(checkAccessToken(accessToken));
+  }, []);
+
   return (
     <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
       <Router>
-        <Header />
+        <Header userType={userType} setUserType={setUserType} />
         <Routes>
           <Route exact path="/" element={<Main />} />
-          <Route path="/auth" element={<Auth />} />
+          <Route path="/auth" element={<Auth setUserType={setUserType} />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </Router>
       <ToastContainer />
