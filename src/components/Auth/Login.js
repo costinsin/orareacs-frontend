@@ -5,11 +5,14 @@ import usernameImg from "../../assets/user.png";
 import authcodeImg from "../../assets/authcode.png";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { checkAccessToken } from "../../utils/tokens";
+import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function Login({ setUserType }) {
   const [authCodeStage, setAuthCodeStage] = useState(false);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  let navigate = useNavigate();
 
   function checkFieldError(object, field) {
     if (!/^[0-9]+$/.test(object[field]["value"])) {
@@ -76,8 +79,12 @@ export default function Login() {
     toast.promise(loginCheckCodeForCredentials, {
       pending: "Authentification in progress...",
       success: {
-        render() {
-          //Main changes
+        render(result) {
+          localStorage.setItem("accessToken", result.data.data.accessToken);
+          localStorage.setItem("refreshToken", result.data.data.refreshToken);
+          setUserType(checkAccessToken(result.data.data.accessToken));
+
+          navigate("/");
 
           return "Login successfully 🎉";
         },

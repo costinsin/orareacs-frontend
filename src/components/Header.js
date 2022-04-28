@@ -2,7 +2,7 @@ import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
-export default function Header({ userType }) {
+export default function Header({ userType, setUserType }) {
   switch (userType) {
     case "admin":
       return (
@@ -39,7 +39,16 @@ export default function Header({ userType }) {
             className="justify-content-end"
           >
             <NavButton text="Settings" path="/settings" />
-            <NavButton text="Log out" path="/logout" />
+
+            <NavButton
+              text="Log out"
+              path="/"
+              onClick={() => {
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+                setUserType("");
+              }}
+            />
           </Navbar.Collapse>
         </Navbar>
       );
@@ -64,12 +73,13 @@ export default function Header({ userType }) {
   }
 }
 
-function NavButton({ text, path }) {
+function NavButton({ text, path, onClick }) {
   return (
     <Nav>
       <LinkContainer
         style={{ paddingRight: "2rem", paddingLeft: "1rem" }}
         to={path}
+        onClick={onClick}
       >
         <Nav.Link>{text}</Nav.Link>
       </LinkContainer>
