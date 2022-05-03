@@ -94,7 +94,10 @@ export default function Register({ setAuthState }) {
       },
       error: {
         render(result) {
-          if (result.data.response !== undefined)
+          if (
+            result.data.response !== undefined &&
+            result.data.response.data.message !== undefined
+          )
             return result.data.response.data.message;
           else return "An error has occurred";
         },

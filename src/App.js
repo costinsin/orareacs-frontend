@@ -7,16 +7,17 @@ import Settings from "./components/Student/Settings";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { checkAccessToken } from "./utils/tokens";
+import { getAccessRole, revalidateAccessToken } from "./utils/tokens";
 
 export default function App() {
   const [userType, setUserType] = useState("");
 
   useEffect(() => {
-    let accessToken = localStorage.getItem("accessToken");
-    let refreshToken = localStorage.getItem("refreshToken");
+    revalidateAccessToken().then(() => {
+      let accessToken = localStorage.getItem("accessToken");
 
-    setUserType(checkAccessToken(accessToken));
+      setUserType(getAccessRole(accessToken));
+    });
   }, []);
 
   return (
@@ -24,7 +25,11 @@ export default function App() {
       <Router>
         <Header userType={userType} setUserType={setUserType} />
         <Routes>
-          <Route exact path="/" element={<Main />} />
+          <Route
+            exact
+            path="/"
+            element={<Main userType={userType} setUserType={setUserType} />}
+          />
           <Route path="/auth" element={<Auth setUserType={setUserType} />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>
