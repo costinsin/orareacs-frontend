@@ -71,7 +71,7 @@ export default function TimetableView({ setUserType, setCustomizePage }) {
         },
       });
     });
-  }, [setUserType]);
+  }, []);
 
   return (
     <>

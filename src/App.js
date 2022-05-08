@@ -18,6 +18,13 @@ moment.locale("ko", {
     doy: 1,
   },
 });
+
+moment.locale("ko", {
+  week: {
+    dow: 1,
+    doy: 1,
+  },
+});
 export default function App() {
   const [userType, setUserType] = useState("");
 
