@@ -4,7 +4,7 @@ import StudentMain from "./Student/StudentMain";
 export default function Main({ userType, setUserType }) {
   switch (userType) {
     case "student":
-      return <StudentMain userType={userType} setUserType={setUserType} />;
+      return <StudentMain setUserType={setUserType} />;
     default:
       return <h1>Main</h1>;
   }

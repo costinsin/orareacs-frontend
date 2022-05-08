@@ -8,6 +8,14 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getAccessRole, revalidateAccessToken } from "./utils/tokens";
+import moment from "moment";
+
+moment.locale("ko", {
+  week: {
+    dow: 1,
+    doy: 1,
+  },
+});
 
 export default function App() {
   const [userType, setUserType] = useState("");
