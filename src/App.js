@@ -31,7 +31,7 @@ export default function App() {
             element={<Main userType={userType} setUserType={setUserType} />}
           />
           <Route path="/auth" element={<Auth setUserType={setUserType} />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/settings" element={<Settings setUserType={setUserType}/>} />
         </Routes>
       </Router>
       <ToastContainer />
