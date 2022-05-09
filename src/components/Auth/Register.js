@@ -13,7 +13,7 @@ export default function Register({ setAuthState }) {
   let [secretImage, setSecretImage] = useState("");
 
   // TODO: Make a database request to get the user's groups
-  const groups = ["331CC", "332CC", "333CC", "334CC", "335CC", "336CC"];
+  const groups = ["335CCa", "335CCb", "312CAb"];
 
   function checkFieldError(object, fields) {
     for (let i = 0; i < fields.length; i++) {

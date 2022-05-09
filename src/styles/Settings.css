@@ -5,7 +5,7 @@
   padding: 10px 0;
 }
 
-.container {
+.settings-container {
   display: contents;
   width: 100%;
 }
@@ -33,7 +33,7 @@
   margin-right: auto;
 }
 
-.img {
+.settings-img {
   height: 1rem;
   margin-right: 0.3rem;
 }

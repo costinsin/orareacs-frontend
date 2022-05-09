@@ -20,7 +20,15 @@ export default function Header({ userType, setUserType }) {
           >
             <NavButton text="Manage" path="/manage" />
             <NavButton text="Settings" path="/settings" />
-            <NavButton text="Log out" path="/logout" />
+            <NavButton
+              text="Log out"
+              path="/"
+              onClick={() => {
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+                setUserType("");
+              }}
+            />
           </Navbar.Collapse>
         </Navbar>
       );
