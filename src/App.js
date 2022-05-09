@@ -16,7 +16,6 @@ moment.locale("ko", {
     doy: 1,
   },
 });
-
 export default function App() {
   const [userType, setUserType] = useState("");
 
@@ -39,10 +38,13 @@ export default function App() {
             element={<Main userType={userType} setUserType={setUserType} />}
           />
           <Route path="/auth" element={<Auth setUserType={setUserType} />} />
-          <Route path="/settings" element={<Settings setUserType={setUserType}/>} />
+          <Route
+            path="/settings"
+            element={<Settings setUserType={setUserType} />}
+          />
         </Routes>
       </Router>
-      <ToastContainer />
+      <ToastContainer style={{ marginTop: "40px" }} />
     </div>
   );
 }

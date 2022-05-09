@@ -10,7 +10,7 @@ import emailImg from "../../assets/view_email.png";
 import groupImg from "../../assets/multiple_users.png";
 
 export default function Settings({ userType, setUserType }) {
-  const groups = ["331CC", "332CC", "333CC", "334CC", "335CC", "336CC"];
+  const groups = ["335CCa", "335CCb", "312CAb"];
   const [username, setUsername] = useState(null);
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
@@ -176,7 +176,7 @@ export default function Settings({ userType, setUserType }) {
 
   return (
     <div className="mainback">
-      <Container>
+      <Container className="settings-container">
         <Card style={{ width: "40%" }}>
           <Card.Body>
             <h1 className="heading">Profile Details</h1>
@@ -184,7 +184,7 @@ export default function Settings({ userType, setUserType }) {
 
             <Row className="profileContainer">
               <Col>
-                <img src={usernameImg} className="img" />
+                <img src={usernameImg} className="settings-img" />
                 Username
               </Col>
               <Col className="description">{username}</Col>
@@ -192,7 +192,7 @@ export default function Settings({ userType, setUserType }) {
             </Row>
             <Row className="profileContainer">
               <Col>
-                <img src={idcardImg} className="img" />
+                <img src={idcardImg} className="settings-img" />
                 First Name
               </Col>
               <Col className="description">{firstName}</Col>
@@ -200,7 +200,7 @@ export default function Settings({ userType, setUserType }) {
             </Row>
             <Row className="profileContainer">
               <Col>
-                <img src={idcardImg} className="img" />
+                <img src={idcardImg} className="settings-img" />
                 Last Name
               </Col>
               <Col className="description">{lastName}</Col>
@@ -208,7 +208,7 @@ export default function Settings({ userType, setUserType }) {
             </Row>
             <Row className="profileContainer">
               <Col>
-                <img src={emailImg} className="img" />
+                <img src={emailImg} className="settings-img" />
                 Email
               </Col>
               <Col className="description">{email}</Col>
@@ -216,7 +216,7 @@ export default function Settings({ userType, setUserType }) {
             </Row>
             <Row className="profileContainer">
               <Col>
-                <img src={groupImg} className="img" />
+                <img src={groupImg} className="settings-img" />
                 Group
               </Col>
               <Col className="description">{group}</Col>
