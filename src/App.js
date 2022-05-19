@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Auth from "./components/Auth/Auth";
 import Main from "./components/Main";
 import Settings from "./components/Student/Settings";
+import Manage from "./components/Admin/Manage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -41,6 +42,10 @@ export default function App() {
           <Route
             path="/settings"
             element={<Settings setUserType={setUserType} />}
+          />
+          <Route
+            path="/manage"
+            element={<Manage setUserType={setUserType} />}
           />
         </Routes>
       </Router>

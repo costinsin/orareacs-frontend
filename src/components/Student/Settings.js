@@ -81,7 +81,7 @@ export default function Settings({ userType, setUserType }) {
     for (let i = 0; i < fields.length; i++) {
       if (fields[i] === "firstName") {
         if (
-          object[fields[i]]["value"].length != 0 &&
+          object[fields[i]]["value"].length !== 0 &&
           !/^[a-zA-Z]+$/.test(object[fields[i]]["value"])
         ) {
           toast.error("First name must contain only letters");
@@ -91,7 +91,7 @@ export default function Settings({ userType, setUserType }) {
 
       if (fields[i] === "lastName") {
         if (
-          object[fields[i]]["value"].length != 0 &&
+          object[fields[i]]["value"].length !== 0 &&
           !/^[a-zA-Z]+$/.test(object[fields[i]]["value"])
         ) {
           toast.error("Last name must contain only letters");
@@ -123,19 +123,15 @@ export default function Settings({ userType, setUserType }) {
       let jsonpassword = null;
       let jsongroup = null;
 
-      if (e.target.firstName.value != "")
+      if (e.target.firstName.value !== "")
         jsonfirstName = e.target.firstName.value;
-      if (e.target.lastName.value != "") jsonlastName = e.target.lastName.value;
+      if (e.target.lastName.value !== "")
+        jsonlastName = e.target.lastName.value;
 
-      if (e.target.email.value != "") jsonemail = e.target.email.value;
-      if (e.target.group.value != "default") jsongroup = e.target.group.value;
-      if (e.target.password.value != "") jsonpassword = e.target.password.value;
-
-      console.log(jsonfirstName);
-      console.log(jsonlastName);
-      console.log(jsonemail);
-      console.log(jsonpassword);
-      console.log(jsongroup);
+      if (e.target.email.value !== "") jsonemail = e.target.email.value;
+      if (e.target.group.value !== "default") jsongroup = e.target.group.value;
+      if (e.target.password.value !== "")
+        jsonpassword = e.target.password.value;
 
       let updatePromise = axios.put(
         "https://orareacs-backend.herokuapp.com/api/updateDetails",
@@ -175,58 +171,58 @@ export default function Settings({ userType, setUserType }) {
   }
 
   return (
-    <div className="mainback">
+    <div className="settings-mainback">
       <Container className="settings-container">
         <Card style={{ width: "40%" }}>
           <Card.Body>
-            <h1 className="heading">Profile Details</h1>
+            <h1 className="settings-heading">Profile Details</h1>
             <h4>{role}</h4>
 
-            <Row className="profileContainer">
+            <Row className="settings-profileContainer">
               <Col>
-                <img src={usernameImg} className="settings-img" />
+                <img src={usernameImg} alt="" className="settings-img" />
                 Username
               </Col>
-              <Col className="description">{username}</Col>
+              <Col className="settings-description">{username}</Col>
               <hr />
             </Row>
-            <Row className="profileContainer">
+            <Row className="settings-profileContainer">
               <Col>
-                <img src={idcardImg} className="settings-img" />
+                <img src={idcardImg} alt="" className="settings-img" />
                 First Name
               </Col>
-              <Col className="description">{firstName}</Col>
+              <Col className="settings-description">{firstName}</Col>
               <hr />
             </Row>
-            <Row className="profileContainer">
+            <Row className="settings-profileContainer">
               <Col>
-                <img src={idcardImg} className="settings-img" />
+                <img src={idcardImg} alt="" className="settings-img" />
                 Last Name
               </Col>
-              <Col className="description">{lastName}</Col>
+              <Col className="settings-description">{lastName}</Col>
               <hr />
             </Row>
-            <Row className="profileContainer">
+            <Row className="settings-profileContainer">
               <Col>
-                <img src={emailImg} className="settings-img" />
+                <img src={emailImg} alt="" className="settings-img" />
                 Email
               </Col>
-              <Col className="description">{email}</Col>
+              <Col className="settings-description">{email}</Col>
               <hr />
             </Row>
-            <Row className="profileContainer">
+            <Row className="settings-profileContainer">
               <Col>
-                <img src={groupImg} className="settings-img" />
+                <img src={groupImg} alt="" className="settings-img" />
                 Group
               </Col>
-              <Col className="description">{group}</Col>
+              <Col className="settings-description">{group}</Col>
               <hr />
             </Row>
           </Card.Body>
         </Card>
         <Card style={{ width: "45%", display: "grid", alignItems: "center" }}>
           <Card.Body>
-            <h1 className="heading">Edit Profile</h1>
+            <h1 className="settings-heading">Edit Profile</h1>
 
             <Form onSubmit={handleUpdate}>
               <Form.Group controlId="formFirstName" className="mb-2">

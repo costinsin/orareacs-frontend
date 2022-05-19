@@ -1,0 +1,7 @@
+table {
+  --rft-main-color: #1a7bc1;
+  --rft-button-color: #1a7bc1;
+  --rft-even-row-color: white;
+  max-width: 1000px;
+  margin: auto;
+}

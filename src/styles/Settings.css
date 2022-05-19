@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@200&display=swap");
 
-.mainback {
+.settings-mainback {
   display: flex;
   padding: 10px 0;
 }
@@ -10,24 +10,24 @@
   width: 100%;
 }
 
-.heading {
+.settings-heading {
   font-size: 35px;
   font-family: "Work Sans", sans-serif;
   text-align: center;
 }
 
-.description {
+.settings-description {
   font-family: "Work Sans", sans-serif;
   font-style: italic;
 }
 
-.profileContainer {
+.settings-profileContainer {
   font-size: 16px;
   display: flex;
   padding: 10px;
 }
 
-.card {
+.settings-card {
   display: flex;
   margin-left: auto;
   margin-right: auto;
