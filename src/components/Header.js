@@ -18,8 +18,9 @@ export default function Header({ userType, setUserType }) {
             id="basic-navbar-nav"
             className="justify-content-end"
           >
-            <NavButton text="Manage" path="/manage" />
+            <NavButton text="Manage" path="/manage/users" />
             <NavButton text="Settings" path="/settings" />
+            <NavButton text="Timetable" path="/manage/timetables" />
             <NavButton
               text="Log out"
               path="/"
