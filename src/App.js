@@ -4,7 +4,8 @@ import Header from "./components/Header";
 import Auth from "./components/Auth/Auth";
 import Main from "./components/Main";
 import Settings from "./components/Student/Settings";
-import Manage from "./components/Admin/Manage";
+import ManageUsers from "./components/Admin/ManageUsers";
+import ManageTimetables from "./components/Admin/ManageTimetables";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -44,8 +45,12 @@ export default function App() {
             element={<Settings setUserType={setUserType} />}
           />
           <Route
-            path="/manage"
-            element={<Manage setUserType={setUserType} />}
+            path="/manage/users"
+            element={<ManageUsers setUserType={setUserType} />}
+          />
+          <Route
+            path="/manage/timetables"
+            element={<ManageTimetables setUserType={setUserType} />}
           />
         </Routes>
       </Router>

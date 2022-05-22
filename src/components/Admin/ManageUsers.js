@@ -7,10 +7,9 @@ import "react-flexy-table/dist/index.css";
 import deleteImg from "../../assets/delete.png";
 import editImg from "../../assets/edit.png";
 import { toast } from "react-toastify";
-
 import { getAccessRole, revalidateAccessToken } from "../../utils/tokens";
 
-export default function Manage({ userType, setUserType }) {
+export default function ManageUsers({ userType, setUserType }) {
   const [dataTable, setDataTable] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
@@ -71,8 +70,8 @@ export default function Manage({ userType, setUserType }) {
   }, []);
 
   function handleDelete(data) {
-    //alert('The user "' + data.username + '" is about to be deleted!');
-    console.log(data);
+    alert('The user "' + data.username + '" is about to be deleted!');
+
     // Revalidate token if it expired
     revalidateAccessToken().then(() => {
       // Update the user type depending on the revalidation result
