@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -18,10 +18,15 @@ import removeImg from "../../../assets/remove.png";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function RuleContainer({ ruleList, addRule, deleteRule }) {
+export default function RuleContainer({
+  ruleList,
+  addRule,
+  deleteRule,
+  fetchCourses,
+}) {
   return (
     <Container>
-      <RuleHeader addRule={addRule} />
+      <RuleHeader addRule={addRule} fetchCourses={fetchCourses} />
       <RuleList ruleList={ruleList} deleteRule={deleteRule} />
     </Container>
   );
@@ -62,10 +67,10 @@ function Rule({ rule, deleteRule }) {
         return "Each " + dayName + " until " + formattedEndDate;
 
       case "even":
-        return "Even " + dayName + "s until" + formattedEndDate;
+        return "Even " + dayName + "s until " + formattedEndDate;
 
       case "odd":
-        return "Odd " + dayName + "s until" + formattedEndDate;
+        return "Odd " + dayName + "s until " + formattedEndDate;
 
       case "once":
         return "Once on " + formattedStartDate;
@@ -98,13 +103,29 @@ function Rule({ rule, deleteRule }) {
   );
 }
 
-function RuleHeader({ addRule }) {
+function RuleHeader({ addRule, fetchCourses }) {
   const [showModal, setShowModal] = useState(false);
   const [addRuleType, setAddRuleType] = useState(true);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(
+    new Date(new Date().setHours(0, 0, 0, 0))
+  );
+  const [endDate, setEndDate] = useState(
+    new Date(new Date().setHours(0, 0, 0, 0))
+  );
   const [startHour, setStartHour] = useState(new Date());
   const [endHour, setEndHour] = useState(new Date());
+
+  const [courses, setCourses] = useState([]);
+  const [removeStartDate, setRemoveStartDate] = useState(
+    new Date(new Date().setHours(0, 0, 0, 0))
+  );
+  const [removeEndDate, setRemoveEndDate] = useState(
+    new Date(new Date().setHours(0, 0, 0, 0))
+  );
+
+  useEffect(() => {
+    fetchCourses(setCourses);
+  }, []);
 
   return (
     <>
@@ -148,6 +169,22 @@ function RuleHeader({ addRule }) {
                   endHour: e.target.formEndHour.value,
                 },
               });
+            } else {
+              addRule({
+                type: "remove",
+                course: {
+                  id: e.target.formCourseSelect.value,
+                  name: e.target.formCourseSelect.selectedOptions[0].label,
+                  startDate: new Date(
+                    removeStartDate.getTime() -
+                      removeStartDate.getTimezoneOffset() * 60 * 1000
+                  ),
+                  endDate: new Date(
+                    removeEndDate.getTime() -
+                      removeEndDate.getTimezoneOffset() * 60 * 1000
+                  ),
+                },
+              });
             }
             setShowModal(false);
           }}
@@ -175,7 +212,7 @@ function RuleHeader({ addRule }) {
               </div>
             </Form.Group>
             <hr />
-            {addRuleType && (
+            {(addRuleType && (
               <>
                 <Form.Group controlId="formCourseName" className="mb-3">
                   <FormField
@@ -250,6 +287,55 @@ function RuleHeader({ addRule }) {
                       timeIntervals={15}
                       timeCaption="Time"
                       dateFormat="HH:mm"
+                    />
+                  </div>
+                </Form.Group>
+              </>
+            )) || (
+              <>
+                <Form.Group controlId="formCourseSelect" className="mb-3">
+                  <div className="d-flex align-items-center">
+                    <img src={courseImg} className="form-icon" alt="" />
+                    <Form.Select required name="courseSelect">
+                      {courses.map((course) => {
+                        return (
+                          <option key={course.id} value={course.id}>
+                            {course.name +
+                              " - " +
+                              course.type +
+                              " - " +
+                              new Date(course.startDate).toLocaleDateString(
+                                "en-GB",
+                                {
+                                  weekday: "long",
+                                }
+                              )}
+                          </option>
+                        );
+                      })}
+                    </Form.Select>
+                  </div>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <div className="d-flex align-items-center">
+                    <img src={calendarImg} className="form-icon" alt="" />
+                    <div style={{ width: "100px" }}>Start Date</div>
+                    <DatePicker
+                      id="formStartDate"
+                      selected={removeStartDate}
+                      onChange={(date) => setRemoveStartDate(date)}
+                    />
+                  </div>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <div className="d-flex align-items-center">
+                    <img src={calendarImg} className="form-icon" alt="" />
+                    <div style={{ width: "100px" }}>End Date</div>
+                    <DatePicker
+                      id="formEndDate"
+                      minDate={removeStartDate}
+                      selected={removeEndDate}
+                      onChange={(date) => setRemoveEndDate(date)}
                     />
                   </div>
                 </Form.Group>
