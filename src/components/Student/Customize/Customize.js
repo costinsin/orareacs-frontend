@@ -103,6 +103,37 @@ export default function Customize({ setUserType, setCustomizePage }) {
     });
   }
 
+  function fetchCourses(setCourses) {
+    // Revalidate token if it expired
+    revalidateAccessToken().then(() => {
+      // Update the user type depending on the revalidation result
+      setUserType(getAccessRole(localStorage.getItem("accessToken")));
+
+      // If user was logged out, don't contiune with fetching the timetable
+      if (getAccessRole(localStorage.getItem("accessToken")) !== "student")
+        return;
+
+      // Get courses
+      let coursesPromise = axios.get(
+        "https://orareacs-backend.herokuapp.com/api/course",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          timeout: 30000,
+        }
+      );
+
+      coursesPromise
+        .then((response) => {
+          setCourses(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+  }
+
   function fetchRules(displayToast) {
     // Revalidate token if it expired
     revalidateAccessToken().then(() => {
@@ -184,6 +215,7 @@ export default function Customize({ setUserType, setCustomizePage }) {
           ruleList={ruleList}
           addRule={addRule}
           deleteRule={deleteRule}
+          fetchCourses={fetchCourses}
         />
       </div>
     </>
