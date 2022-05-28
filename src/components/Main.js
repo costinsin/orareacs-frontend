@@ -1,10 +1,12 @@
 import React from "react";
-import StudentMain from "./Student/StudentMain";
+import LoggedMain from "./Student/LoggedMain";
 
 export default function Main({ userType, setUserType }) {
   switch (userType) {
     case "student":
-      return <StudentMain setUserType={setUserType} />;
+      return <LoggedMain setUserType={setUserType} />;
+    case "admin":
+      return <LoggedMain setUserType={setUserType} />;
     default:
       return <h1>Main</h1>;
   }

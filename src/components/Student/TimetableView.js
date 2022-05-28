@@ -19,8 +19,7 @@ export default function TimetableView({ setUserType, setCustomizePage }) {
       setUserType(getAccessRole(localStorage.getItem("accessToken")));
 
       // If user was logged out, don't contiune with fetching the timetable
-      if (getAccessRole(localStorage.getItem("accessToken")) !== "student")
-        return;
+      if (getAccessRole(localStorage.getItem("accessToken")) === "") return;
 
       // Get timetable
       let timetablePromise = axios.get(

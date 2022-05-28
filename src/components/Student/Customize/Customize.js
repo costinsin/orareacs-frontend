@@ -15,8 +15,7 @@ export default function Customize({ setUserType, setCustomizePage }) {
       setUserType(getAccessRole(localStorage.getItem("accessToken")));
 
       // If user was logged out, don't contiune with fetching the timetable
-      if (getAccessRole(localStorage.getItem("accessToken")) !== "student")
-        return;
+      if (getAccessRole(localStorage.getItem("accessToken")) === "") return;
 
       // Add rule
       let addRulePromise = axios.post(
@@ -63,8 +62,7 @@ export default function Customize({ setUserType, setCustomizePage }) {
       setUserType(getAccessRole(localStorage.getItem("accessToken")));
 
       // If user was logged out, don't contiune with fetching the timetable
-      if (getAccessRole(localStorage.getItem("accessToken")) !== "student")
-        return;
+      if (getAccessRole(localStorage.getItem("accessToken")) === "") return;
 
       // Add rule
       let deleteRulePromise = axios.delete(
@@ -110,8 +108,7 @@ export default function Customize({ setUserType, setCustomizePage }) {
       setUserType(getAccessRole(localStorage.getItem("accessToken")));
 
       // If user was logged out, don't contiune with fetching the timetable
-      if (getAccessRole(localStorage.getItem("accessToken")) !== "student")
-        return;
+      if (getAccessRole(localStorage.getItem("accessToken")) === "") return;
 
       // Get courses
       let coursesPromise = axios.get(
@@ -141,8 +138,7 @@ export default function Customize({ setUserType, setCustomizePage }) {
       setUserType(getAccessRole(localStorage.getItem("accessToken")));
 
       // If user was logged out, don't contiune with fetching the timetable
-      if (getAccessRole(localStorage.getItem("accessToken")) !== "student")
-        return;
+      if (getAccessRole(localStorage.getItem("accessToken")) === "") return;
 
       // Get timetable
       let rulesPromise = axios.get(
