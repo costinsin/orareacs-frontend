@@ -25,8 +25,7 @@ export default function Settings({ userType, setUserType }) {
       setUserType(getAccessRole(localStorage.getItem("accessToken")));
 
       // If user was logged out, don't contiune with fetching the timetable
-      if (getAccessRole(localStorage.getItem("accessToken")) !== "student")
-        return;
+      if (getAccessRole(localStorage.getItem("accessToken")) === "") return;
 
       let getDetails = axios.get(
         "https://orareacs-backend.herokuapp.com/api/getDetails",
@@ -111,8 +110,7 @@ export default function Settings({ userType, setUserType }) {
       setUserType(getAccessRole(localStorage.getItem("accessToken")));
 
       // If user was logged out, don't contiune with fetching the timetable
-      if (getAccessRole(localStorage.getItem("accessToken")) !== "student")
-        return;
+      if (getAccessRole(localStorage.getItem("accessToken")) === "") return;
 
       if (checkFieldError(e.target, ["firstName", "lastName", "password"]))
         return;
