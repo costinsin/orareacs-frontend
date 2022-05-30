@@ -1,4 +1,4 @@
-table {
+.manage-users-table {
   --rft-main-color: #1a7bc1;
   --rft-button-color: #1a7bc1;
   --rft-even-row-color: white;
@@ -15,9 +15,11 @@ table {
 }
 
 .manage-page {
-  display: flex;
+  display: grid;
   align-items: center;
-  justify-content: center;
+  justify-items: center;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .manage-input {

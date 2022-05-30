@@ -7,7 +7,7 @@ import editImg from "../../assets/edit.png";
 import "../../styles/Manage.css";
 import { toast } from "react-toastify";
 import { Modal, Form } from "react-bootstrap";
-import { Editor, EditorState, ContentState, convertToRaw } from "draft-js";
+import { Editor, EditorState, ContentState } from "draft-js";
 
 export default function TimetableEdit({ userType, setUserType }) {
   const [dataTable, setDataTable] = useState([]);
@@ -18,7 +18,7 @@ export default function TimetableEdit({ userType, setUserType }) {
     EditorState.createEmpty()
   );
   const [selectedGroup, setSelectedGroup] = useState(null);
-  const [jsonText, setJsonText] = useState(null);
+  const [jsonText, setJsonText] = useState("");
 
   function fetchGroups() {
     revalidateAccessToken().then(() => {
@@ -142,7 +142,6 @@ export default function TimetableEdit({ userType, setUserType }) {
           });
         };
         reader.readAsText(selectedFile);
-        console.log(fileText);
       });
     } else {
       alert("No files selected !");
@@ -156,10 +155,36 @@ export default function TimetableEdit({ userType, setUserType }) {
 
   function handleEdit(data) {
     setShowModal(true);
-    setEditorState(
-      EditorState.createWithContent(ContentState.createFromText(jsonText))
-    );
     setSelectedGroup(data.Group);
+
+    revalidateAccessToken().then(() => {
+      // Update the user type depending on the revalidation result
+      setUserType(getAccessRole(localStorage.getItem("accessToken")));
+
+      // If user was logged out, don't contiune with fetching the timetable
+      if (getAccessRole(localStorage.getItem("accessToken")) !== "admin")
+        return;
+
+      let getJson = axios.get(
+        `https://orareacs-backend.herokuapp.com/api/timetable/${data.Group}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          timeout: 30000,
+        }
+      );
+      getJson
+        .then((res) => {
+          setJsonText(res.data);
+          setEditorState(
+            EditorState.createWithContent(
+              ContentState.createFromText(JSON.stringify(res.data, null, 4))
+            )
+          );
+        })
+        .catch((err) => console.log(err));
+    });
   }
 
   function updateTimetable() {
@@ -171,40 +196,34 @@ export default function TimetableEdit({ userType, setUserType }) {
       if (getAccessRole(localStorage.getItem("accessToken")) !== "admin")
         return;
 
-      const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
-      const value = blocks
-        .map((block) => (!block.text.trim() && "\n") || block.text)
-        .join("\n");
-      setJsonText(value);
+      let updatePromise = axios.put(
+        `https://orareacs-backend.herokuapp.com/api/timetable/${selectedGroup}`,
+        JSON.parse(editorState.getCurrentContent().getPlainText()),
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          timeout: 30000,
+        }
+      );
 
-      // let updatePromise = axios.put(
-      //   "https://orareacs-backend.herokuapp.com/api/timetable",
-      //   JSON.parse(jsonText),
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      //     },
-      //     timeout: 30000,
-      //   }
-      // );
-
-      // // A toast notification that waits for backend response before showing a message
-      // toast.promise(updatePromise, {
-      //   pending: "Update in progres...",
-      //   success: {
-      //     render(result) {
-      //       fetchGroups();
-      //       return "Timetable successfully updated 🎉";
-      //     },
-      //   },
-      //   error: {
-      //     render(result) {
-      //       if (result.data.response !== undefined)
-      //         return result.data.response.data.message;
-      //       else return "An error has occurred";
-      //     },
-      //   },
-      // });
+      // A toast notification that waits for backend response before showing a message
+      toast.promise(updatePromise, {
+        pending: "Update in progres...",
+        success: {
+          render(result) {
+            fetchGroups();
+            return "Timetable successfully updated 🎉";
+          },
+        },
+        error: {
+          render(result) {
+            if (result.data.response !== undefined)
+              return result.data.response.data.message;
+            else return "An error has occurred";
+          },
+        },
+      });
       setShowModal(false);
     });
   }
@@ -236,8 +255,8 @@ export default function TimetableEdit({ userType, setUserType }) {
   ];
 
   return (
-    <>
-      <div className="manage-page">
+    <div className="manage-page">
+      <div>
         <input type="file" className="manage-input" onChange={changeHandler} />
         <button className="manage-button" onClick={handleUpload}>
           Upload
@@ -256,11 +275,15 @@ export default function TimetableEdit({ userType, setUserType }) {
         }}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Edit timetable for group </Modal.Title>
+          <Modal.Title>Edit timetable for group {selectedGroup}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group controlId="json" className="mb-2">
+            <Form.Group
+              controlId="json"
+              className="mb-2 overflow-auto"
+              style={{ height: "350px" }}
+            >
               <Editor editorState={editorState} onChange={setEditorState} />
             </Form.Group>
           </Form>
@@ -271,6 +294,6 @@ export default function TimetableEdit({ userType, setUserType }) {
           </button>
         </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 }
