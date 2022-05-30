@@ -35,7 +35,20 @@ export default function ManageUsers({ userType, setUserType }) {
         }
       );
       getUsers
-        .then((res) => setDataTable(res.data))
+        .then((res) => {
+          setDataTable(
+            res.data.map((elem) => {
+              return {
+                username: elem["username"],
+                "first name": elem["firstName"],
+                "last name": elem["lastName"],
+                email: elem["email"],
+                group: elem["group"],
+                role: elem["role"],
+              };
+            })
+          );
+        })
         .catch((err) => console.log(err));
     });
   }
@@ -237,14 +250,15 @@ export default function ManageUsers({ userType, setUserType }) {
 
   return (
     <>
-      <ReactFlexyTable
-        data={dataTable}
-        additionalCols={additionalCols}
-        sortable
-        filterable
-        caseSensitive
-        nonFilterCols={["role", "email", "group"]}
-      />
+      <div className="manage-page">
+        <ReactFlexyTable
+          data={dataTable}
+          additionalCols={additionalCols}
+          sortable
+          filterable
+          className="manage-users-table"
+        />
+      </div>
       <Modal
         show={showModal}
         onHide={() => {
