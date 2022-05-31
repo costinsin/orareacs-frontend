@@ -10,7 +10,7 @@ import emailImg from "../../assets/view_email.png";
 import groupImg from "../../assets/multiple_users.png";
 
 export default function Settings({ userType, setUserType }) {
-  const groups = ["335CCa", "335CCb", "312CAb"];
+  const groups = ["335CCa", "335CCb", "312CAa", "312CAb"];
   const [username, setUsername] = useState(null);
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
