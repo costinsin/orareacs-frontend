@@ -167,9 +167,9 @@ export default function ManageUsers({ userType, setUserType }) {
       if (checkFieldError(e.target, ["firstName", "lastName"])) return;
 
       if (e.target.firstName.value !== "")
-        selectedUser.firstName = e.target.firstName.value;
+        selectedUser["first name"] = e.target.firstName.value;
       if (e.target.lastName.value !== "")
-        selectedUser.lastName = e.target.lastName.value;
+        selectedUser["last name"] = e.target.lastName.value;
 
       if (e.target.email.value !== "")
         selectedUser.email = e.target.email.value;
@@ -181,8 +181,8 @@ export default function ManageUsers({ userType, setUserType }) {
         "https://orareacs-backend.herokuapp.com/api/user",
         {
           username: selectedUser.username,
-          firstName: selectedUser.firstName,
-          lastName: selectedUser.lastName,
+          firstName: selectedUser["first name"],
+          lastName: selectedUser["last name"],
           role: selectedUser.role,
           email: selectedUser.email,
           group: selectedUser.group,
@@ -291,20 +291,20 @@ export default function ManageUsers({ userType, setUserType }) {
             <Form.Group controlId="formFirstName" className="mb-2">
               <label>First name</label>
               <input
-                type="firstName"
+                type="text"
                 name="firstName"
                 className="form-control"
-                placeholder={selectedUser.firstName}
+                placeholder={selectedUser["first name"]}
               />
             </Form.Group>
             <Form.Group controlId="formLastName" className="mb-2">
               <label>Last name</label>
               <input
-                type="lastName"
+                type="text"
                 name="lastName"
                 className="form-control"
                 size="sm"
-                placeholder={selectedUser.lastName}
+                placeholder={selectedUser["last name"]}
               />
             </Form.Group>
             <Form.Group controlId="formEmail" className="mb-2">
